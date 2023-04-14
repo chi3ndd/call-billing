@@ -1,0 +1,46 @@
+version: '2.4'
+
+services:
+  api:
+    image: call-billing:1.0.0
+    container_name: webservice
+    restart: "always"
+    ports:
+      - "127.0.0.1:8910:8910"
+    networks:
+      - mongo
+    environment:
+      - CONFIG_FILE_PATH=/app/config.yaml
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5.0
+    container_name: mongo
+    restart: "always"
+    ports:
+      - "127.0.0.1:27017:27017"
+    networks:
+      - mongo
+    volumes:
+      - ./data:/data/db
+    logging:
+      driver: "json-file"
+      options:
+       max-size: "10m"
+       max-file: "5"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=vin
+      - MONGO_INITDB_ROOT_PASSWORD=123qwer
+    mem_limit: 2g
+
+networks:
+  mongo:
+      name: mongo

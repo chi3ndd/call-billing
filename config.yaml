@@ -1,0 +1,5 @@
+app:
+  address: "0.0.0.0:8910"
+adapter:
+  mongo:
+    address: "mongodb://vin:123qwer@mongo:27017"
